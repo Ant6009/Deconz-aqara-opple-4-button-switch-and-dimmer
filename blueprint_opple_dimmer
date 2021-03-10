@@ -1,6 +1,6 @@
 blueprint:
-  name: deCONZ - Aqara Opple - Wireless 4 Buttons remote
-  description: "Supported actions: single, double, tripple, long and longrelease."
+  name: deCONZ - Aqara Opple - Wireless 4 Buttons remote with dimmer action
+  description: "Supported actions: single, double, tripple, long and longrelease. Long press acts as a dimmer"
   domain: automation
   source_url: https://community.home-assistant.io/t/deconz-aqara-opple-wireless-scene-switch-4-button-lumi-remote-b486opcn01/262960
   # GIU elements
