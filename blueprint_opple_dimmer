@@ -46,7 +46,6 @@ blueprint:
     button_one_hold_in:
       name: Top left button - Long in
       description: Action on long press button
-
       default: []
       selector:
         action: {}
