@@ -1,0 +1,288 @@
+blueprint:
+  name: deCONZ - Aqara Opple - Wireless 4 Buttons remote
+  description: "Supported actions: single, double, tripple, long and longrelease."
+  domain: automation
+  source_url: https://community.home-assistant.io/t/deconz-aqara-opple-wireless-scene-switch-4-button-lumi-remote-b486opcn01/262960
+  # GIU elements
+  input:
+    remote:
+      name: Remote
+      description: Opple remote to use
+      selector:
+        device:
+          integration: deconz
+          manufacturer: LUMI
+          model: lumi.remote.b486opcn01
+
+    # --- BUTTON ONE ---------------------------------------------------------------
+    button_one_single_press:
+      name: Top left button - Single press
+      description: Action on single press button
+      default: []
+      selector:
+        action: {}
+
+    button_one_double_press:
+      name: Top left button - Double press
+      description: Action on double press button
+      default: []
+      selector:
+        action: {}
+
+    button_one_triple_press:
+      name: Top left button - Triple press
+      description: Action on triple press button
+      default: []
+      selector:
+        action: {}
+
+    button_one_hold_release:
+      name: Top left button - Long release
+      description: Action on long release of button
+      default: []
+      selector:
+        action: {}
+
+    button_one_hold_in:
+      name: Top left button - Long in
+      description: Action on long press button
+
+      default: []
+      selector:
+        action: {}
+
+    # --- BUTTON TWO ---------------------------------------------------------------
+    button_two_single_press:
+      name: Top right button - Single press
+      description: Action on single press button
+      default: []
+      selector:
+        action: {}
+
+    button_two_double_press:
+      name: Top right button - Double press
+      description: Action on double press button
+      default: []
+      selector:
+        action: {}
+
+    button_two_triple_press:
+      name: Top right button - Triple press
+      description: Action on triple press button
+      default: []
+      selector:
+        action: {}
+
+    button_two_hold_release:
+      name: Top right button - Long release
+      description: Action on long release of button
+      default: []
+      selector:
+        action: {}
+
+    button_two_hold_in:
+      name: Top right button - Long in
+      description: Action on long press button
+      default: []
+      selector:
+        action: {}
+
+    # --- BUTTON THREE -------------------------------------------------------------
+    button_three_single_press:
+      name: Bottom left button - Single press
+      description: Action on single press button
+      default: []
+      selector:
+        action: {}
+
+    button_three_double_press:
+      name: Bottom left button - Double press
+      description: Action on double press button
+      default: []
+      selector:
+        action: {}
+
+    button_three_triple_press:
+      name: Bottom left button - Triple press
+      description: AAction on triple press button
+      default: []
+      selector:
+        action: {}
+
+    button_three_hold_release:
+      name: Bottom left button - Long release
+      description: Action on long release of button
+      default: []
+      selector:
+        action: {}
+
+    button_three_hold_in:
+      name: Bottom left button - Long
+      description: Action on long press button
+      default: []
+      selector:
+        action: {}
+
+    # --- BUTTON FOUR --------------------------------------------------------------
+    button_four_single_press:
+      name: Bottom right button Single press
+      description: Action on single press button
+      default: []
+      selector:
+        action: {}
+
+    button_four_double_press:
+      name: Bottom right button Double press
+      description: Action on double press button
+      default: []
+      selector:
+        action: {}
+
+    button_four_triple_press:
+      name: Bottom right button triple press
+      description: Action on triple press button
+      default: []
+      selector:
+        action: {}
+
+    button_four_hold_release:
+      name: Bottom right button Long release
+      description: Action on long release of button
+      default: []
+      selector:
+        action: {}
+
+    button_four_hold_in:
+      name: Bottom right button Long in
+      description: Action on long press button
+      default: []
+      selector:
+        action: {}
+# End GUI elements
+
+# If press detected before end of action restart script
+mode: restart
+max_exceeded: silent
+
+trigger:
+  - platform: event
+    event_type: deconz_event
+    event_data:
+      device_id: !input "remote"
+action:
+  - variables:
+      event: "{{ trigger.event.data.event }}"
+  - choose:
+      # Automation
+
+      # --- BUTTON ONE ---------------------------------------------------------------
+      - conditions:
+          - "{{ event == 1002 }}"
+        sequence: !input "button_one_single_press"
+      - conditions:
+          - "{{ event == 1004 }}"
+        sequence: !input "button_one_double_press"
+      - conditions:
+          - "{{ event == 1005 }}"
+        sequence: !input "button_one_triple_press"
+      - conditions:
+          - "{{ event == 1003 }}"
+        sequence: 
+      - conditions:
+          - "{{ event == 1001 }}"
+        sequence: 
+          repeat:
+            while:    
+            - condition: template
+              value_template: "{{ repeat.index < 10 }}"
+            sequence:
+            - service: light.turn_on
+              target: !input "button_one_hold_release"
+              data:
+                transition: 1
+                brightness_step_pct: -10
+            - delay: 1
+
+      # --- BUTTON TWO ---------------------------------------------------------------
+      - conditions:
+          - "{{ event == 2002 }}"
+        sequence: !input "button_two_single_press"
+      - conditions:
+          - "{{ event == 2004 }}"
+        sequence: !input "button_two_double_press"
+      - conditions:
+          - "{{ event == 2005 }}"
+        sequence: !input "button_two_triple_press"
+      - conditions:
+          - "{{ event == 2003 }}"
+        sequence: !input "button_two_hold_release"
+      - conditions:
+          - "{{ event == 2001 }}"
+        sequence: 
+          repeat:
+            while:    
+            - condition: template
+              value_template: "{{ repeat.index < 10 }}"
+            sequence:
+            - service: light.turn_on
+              target: !input "button_two_hold_release"
+              data:
+                transition: 1
+                brightness_step_pct: 10
+            - delay: 1
+
+      # --- BUTTON THREE -------------------------------------------------------------
+      - conditions:
+          - "{{ event == 3002 }}"
+        sequence: !input "button_three_single_press"
+      - conditions:
+          - "{{ event == 3004 }}"
+        sequence: !input "button_three_double_press"
+      - conditions:
+          - "{{ event == 3005 }}"
+        sequence: !input "button_three_triple_press"
+      - conditions:
+          - "{{ event == 3003 }}"
+        sequence: !input "button_three_hold_release"
+      - conditions:
+          - "{{ event == 3001 }}"
+        sequence: 
+          repeat:
+            while:    
+            - condition: template
+              value_template: "{{ repeat.index < 10 }}"
+            sequence:
+            - service: light.turn_on
+              target: !input "button_three_hold_release"
+              data:
+                transition: 1
+                brightness_step_pct: -10
+            - delay: 1
+
+      # --- BUTTON FOUR --------------------------------------------------------------
+      - conditions:
+          - "{{ event == 4002 }}"
+        sequence: !input "button_four_single_press"
+      - conditions:
+          - "{{ event == 4004 }}"
+        sequence: !input "button_four_double_press"
+      - conditions:
+          - "{{ event == 4005 }}"
+        sequence: !input "button_four_triple_press"
+      - conditions:
+          - "{{ event == 4003 }}"
+        sequence: !input "button_four_hold_release"
+      - conditions:
+          - "{{ event == 4001 }}"
+        sequence: 
+          repeat:
+            while:    
+            - condition: template
+              value_template: "{{ repeat.index < 10 }}"
+            sequence:
+            - service: light.turn_on
+              target: !input "button_four_hold_release"
+              data:
+                transition: 1
+                brightness_step_pct: 10
+            - delay: 1
