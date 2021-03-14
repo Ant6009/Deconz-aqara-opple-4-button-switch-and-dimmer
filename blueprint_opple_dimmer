@@ -18,7 +18,7 @@ blueprint:
         device:
           integration: deconz
           manufacturer: LUMI
-          model: lumi.remote.b686opcn01
+          model: lumi.remote.b486opcn01
     light_1:
       name: Light(s)
       description: The first light(s group) to control
