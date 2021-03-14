@@ -72,7 +72,7 @@ action:
   - choose:
       # ---------------------------- TURN ON OR OFF ---------------------------- #
       - conditions:
-          - '{{ event == 1002 }}'
+          - '{{ event == 2002 }}'
         sequence:
           - choose:
               - conditions: "{{ force_brightness }}"
@@ -87,13 +87,13 @@ action:
                 target: !input 'light_1'
                 data: {}
       - conditions:
-          - '{{ event == 2002 }}'
+          - '{{ event == 1002 }}'
         sequence:
           - service: light.turn_off
             data: {}
             target: !input 'light_1'
       - conditions:
-          - '{{ event == 3002 }}'
+          - '{{ event == 4002 }}'
         sequence:
           - choose:
               - conditions: "{{ force_brightness }}"
@@ -108,26 +108,12 @@ action:
                 target: !input 'light_2'
                 data: {}
       - conditions:
-          - '{{ event == 4002 }}'
+          - '{{ event == 3002 }}'
         sequence:
           - service: light.turn_off
             data: {}
             target: !input 'light_2'
       # ---------------------------- INCREASE OR DECREASE BRIGHTNESS ---------------------------- #
-      - conditions:
-          - '{{ event == 1001 }}'
-        sequence:
-          - repeat:
-              until:
-                - condition: template
-                  value_template: '{{ event == 1003 }}'
-              sequence:
-                - service: light.turn_on
-                  data:
-                    brightness_step_pct: 10
-                    transition: 0.5
-                  target: !input 'light_1'
-                - delay: '0.2'
       - conditions:
           - '{{ event == 2001 }}'
         sequence:
@@ -138,23 +124,24 @@ action:
               sequence:
                 - service: light.turn_on
                   data:
-                    brightness_step_pct: -10
+                    brightness_step_pct: 10
                     transition: 0.5
                   target: !input 'light_1'
-                - delay: '1'
+                - delay: '0.2'
       - conditions:
-          - '{{ event == 3001 }}'
+          - '{{ event == 1001 }}'
         sequence:
           - repeat:
               until:
                 - condition: template
-                  value_template: '{{ event == 3003 }}'
+                  value_template: '{{ event == 1003 }}'
               sequence:
                 - service: light.turn_on
                   data:
-                    brightness_step_pct: 10
-                  target: !input 'light_2'
-                - delay: '0.2'
+                    brightness_step_pct: -10
+                    transition: 0.5
+                  target: !input 'light_1'
+                - delay: '1'
       - conditions:
           - '{{ event == 4001 }}'
         sequence:
@@ -165,6 +152,19 @@ action:
               sequence:
                 - service: light.turn_on
                   data:
+                    brightness_step_pct: 10
+                  target: !input 'light_2'
+                - delay: '0.2'
+      - conditions:
+          - '{{ event == 3001 }}'
+        sequence:
+          - repeat:
+              until:
+                - condition: template
+                  value_template: '{{ event == 3003 }}'
+              sequence:
+                - service: light.turn_on
+                  data:
                     brightness_step_pct: -10
                   target: !input 'light_2'
                 - delay: '1'
@@ -172,7 +172,7 @@ action:
       # ---------------------------- MAX OR MIN BRIGHTNESS ---------------------------- #
       # ---------- MAX ---------- #
       - conditions:
-          - '{{ event == 1004 }}'
+          - '{{ event == 2004 }}'
         sequence:
           - service: light.turn_on
             data:
@@ -180,7 +180,7 @@ action:
               transition: 0.5
             target: !input 'light_1'
       - conditions:
-          - '{{ event == 3004 }}'
+          - '{{ event == 4004 }}'
         sequence:
           - service: light.turn_on
             data:
@@ -190,7 +190,7 @@ action:
      
       # ---------- MIN ---------- #
       - conditions:
-          - '{{ event == 2004 }}'
+          - '{{ event == 1004 }}'
         sequence:
           - service: light.turn_on
             data:
@@ -198,7 +198,7 @@ action:
               transition: 0.5
             target: !input 'light_1'
       - conditions:
-          - '{{ event == 4004 }}'
+          - '{{ event == 3004 }}'
         sequence:
           - service: light.turn_on
             data:
